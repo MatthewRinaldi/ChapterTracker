@@ -1,16 +1,25 @@
 package com.example.chaptertracker;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.util.List;
 
+@Entity
 public class Book {
-    String bookTitle;
-    String bookDescription;
-    List<Chapter> chapters;
 
-    public Book(String bookTitle, String bookDescription, List<Chapter> chapters) {
+    @PrimaryKey(autoGenerate = true)
+    private int bookId;
+
+    @NonNull
+    private String bookTitle;
+    private String bookDescription;
+    private int progress;
+
+    public Book(String bookTitle, String bookDescription) {
         this.bookTitle = bookTitle;
         this.bookDescription = bookDescription;
-        this.chapters = chapters;
     }
 
     public String getBookTitle() {
@@ -29,11 +38,19 @@ public class Book {
         this.bookDescription = bookDescription;
     }
 
-    public List<Chapter> getChapters() {
-        return chapters;
+    public int getBookId() {
+        return bookId;
     }
 
-    public void setChapters(List<Chapter> chapters) {
-        this.chapters = chapters;
+    public void setBookId(int bookId) {
+        this.bookId = bookId;
+    }
+
+    public int getProgress() {
+        return progress;
+    }
+
+    public void setProgress(int progress) {
+        this.progress = progress;
     }
 }
