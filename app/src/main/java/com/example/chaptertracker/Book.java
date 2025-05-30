@@ -15,11 +15,13 @@ public class Book {
     @NonNull
     private String bookTitle;
     private String bookDescription;
+    private int chapterCount;
     private int progress;
 
-    public Book(String bookTitle, String bookDescription) {
+    public Book(String bookTitle, String bookDescription, int chapterCount) {
         this.bookTitle = bookTitle;
         this.bookDescription = bookDescription;
+        this.chapterCount = chapterCount;
     }
 
     public String getBookTitle() {
@@ -52,5 +54,13 @@ public class Book {
 
     public void setProgress(int progress) {
         this.progress = progress;
+    }
+
+    public int getChapterCount() {
+        return chapterCount;
+    }
+
+    public void setChapterCount(int chapterCount) {
+        this.chapterCount = chapterCount;
     }
 }

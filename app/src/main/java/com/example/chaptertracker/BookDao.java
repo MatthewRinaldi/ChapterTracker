@@ -20,7 +20,7 @@ public interface BookDao {
     LiveData<List<Book>> getAllBooks();
 
     @Insert
-    void insertBook(Book book);
+    long insertBook(Book book);
 
     @Update
     void updateBook(Book book);

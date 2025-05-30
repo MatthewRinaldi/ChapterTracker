@@ -1,5 +1,6 @@
 package com.example.chaptertracker;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.example.chaptertracker.databinding.BookListItemBinding;
 import com.example.chaptertracker.databinding.FragmentBooksBinding;
@@ -22,6 +24,7 @@ public class BooksFragment extends Fragment {
 
     private FragmentBooksBinding binding;
     private BookViewModel bookViewModel;
+    private ChapterViewModel chapterViewModel;
     private BooksRecyclerViewAdapter adapter;
 
     public BooksFragment() {
@@ -36,7 +39,6 @@ public class BooksFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         binding = FragmentBooksBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
@@ -44,6 +46,11 @@ public class BooksFragment extends Fragment {
                 requireActivity(),
                 ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication())
         ).get(BookViewModel.class);
+
+        chapterViewModel = new ViewModelProvider(
+                requireActivity(),
+                ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication())
+        ).get(ChapterViewModel.class);
 
         adapter = new BooksRecyclerViewAdapter();
         binding.booksRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -53,7 +60,50 @@ public class BooksFragment extends Fragment {
             adapter.setBookList(books);
         });
 
+        binding.booksFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCreateBookDialog();
+            }
+        });
+
         return view;
+    }
+
+    private void showCreateBookDialog() {
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        View dialogView = inflater.inflate(R.layout.create_book_dialog, null);
+
+        EditText titleInput = dialogView.findViewById(R.id.editTextBookTitle);
+        EditText descInput = dialogView.findViewById(R.id.editTextBookDesc);
+        EditText chapterInput = dialogView.findViewById(R.id.editTextNumberOfChapter);
+
+        new AlertDialog.Builder(getContext())
+                .setTitle("Create New Book")
+                .setView(dialogView)
+                .setPositiveButton("Create", (dialog, which) -> {
+                    String title = titleInput.getText().toString().trim();
+                    String desc = descInput.getText().toString().trim();
+                    int numberOfChapters = Integer.parseInt(chapterInput.getText().toString().trim());
+
+                    Book newBook = new Book(title, desc, numberOfChapters);
+                    bookViewModel.insertBook(newBook, bookId -> {
+                        // Chapter object creation
+                        for (int i = 1; i <= numberOfChapters; i++) {
+                            Chapter chapter = new Chapter(
+                                    bookId,
+                                    "Chapter " + i,
+                                    "",
+                                    false,
+                                    0,
+                                    0
+                            );
+                            chapterViewModel.insertChapter(chapter);
+                        }
+                    });
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 }
 
