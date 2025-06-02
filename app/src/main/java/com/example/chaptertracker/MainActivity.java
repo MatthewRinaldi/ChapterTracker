@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.chaptertracker.databinding.ActivityMainBinding;
 
@@ -33,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     * Optional: Theme toggles (dark/light/pastel vibe?) or color options for completed chapters
     * */
     ActivityMainBinding binding;
-    ChapterTrackerDatabase db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,13 +46,7 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        db = ChapterTrackerDatabase.getInstance(getApplicationContext());
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.frameLayout, new BooksFragment())
-                .addToBackStack(null)
-                .commit();
     }
+
+
 }

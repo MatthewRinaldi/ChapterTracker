@@ -6,6 +6,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,7 +26,7 @@ import java.util.List;
 
 public class BooksFragment extends Fragment {
 
-    private FragmentBooksBinding binding;
+    FragmentBooksBinding binding;
     private BookViewModel bookViewModel;
     private ChapterViewModel chapterViewModel;
     private BooksRecyclerViewAdapter adapter;
@@ -141,6 +145,14 @@ class BooksRecyclerViewAdapter extends RecyclerView.Adapter<BooksRecyclerViewAda
 
         public void bind(Book book) {
             mBinding.bookTitleTextView.setText(book.getBookTitle());
+            mBinding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Book book = bookList.get(position);
+                    BooksFragmentDirections.BookFragmentAction action = BooksFragmentDirections.bookFragmentAction(book.getBookId());
+                    Navigation.findNavController(v).navigate(action);
+                }
+            });
         }
 
     }

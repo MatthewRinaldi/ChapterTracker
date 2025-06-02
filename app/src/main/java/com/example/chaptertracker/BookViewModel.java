@@ -27,6 +27,10 @@ public class BookViewModel extends AndroidViewModel {
         return allBooks;
     }
 
+    public LiveData<Book> getBookById(int bookId) {
+        return bookDao.getBookById(bookId);
+    }
+
     // Executing new single thread processing for DB transactions
     public void insertBook(Book book, Consumer<Integer> onInsertion) {
         Executors.newSingleThreadExecutor().execute(() -> {
