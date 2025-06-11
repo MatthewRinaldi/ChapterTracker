@@ -22,5 +22,17 @@
         <argument
             android:name="bookId"
             app:argType="integer" />
+        <action
+            android:id="@+id/chapterFragmentAction"
+            app:destination="@id/chapterFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chapterFragment"
+        android:name="com.example.chaptertracker.ChapterFragment"
+        android:label="fragment_chapter"
+        tools:layout="@layout/fragment_chapter" >
+        <argument
+            android:name="chapterId"
+            app:argType="integer" />
     </fragment>
 </navigation>

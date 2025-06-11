@@ -96,7 +96,7 @@ public class BooksFragment extends Fragment {
                         for (int i = 1; i <= numberOfChapters; i++) {
                             Chapter chapter = new Chapter(
                                     bookId,
-                                    "Chapter " + i,
+                                    null,
                                     "",
                                     false,
                                     0,
