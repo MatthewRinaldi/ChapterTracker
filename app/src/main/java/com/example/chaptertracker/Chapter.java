@@ -25,6 +25,7 @@ public class Chapter {
     private Boolean chapterRead = false;
     private int difficultyTag;
     private long timestamp;
+    private int chapterIndex;
 
     public Chapter(int bookId, String chapterName, String chapterNotes, Boolean chapterRead, int difficultyTag, long timestamp) {
         this.bookId = bookId;
@@ -89,5 +90,13 @@ public class Chapter {
 
     public void setChapterId(int chapterId) {
         this.chapterId = chapterId;
+    }
+
+    public int getChapterIndex() {
+        return chapterIndex;
+    }
+
+    public void setChapterIndex(int chapterIndex) {
+        this.chapterIndex = chapterIndex;
     }
 }

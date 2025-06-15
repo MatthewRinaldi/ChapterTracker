@@ -22,6 +22,9 @@ public interface BookDao {
     @Query("SELECT * FROM Book WHERE bookId = :bookId")
     LiveData<Book> getBookById(int bookId);
 
+    @Query("SELECT * FROM Book WHERE bookId = :bookId")
+    Book getSyncBookById(int bookId);
+
     @Insert
     long insertBook(Book book);
 

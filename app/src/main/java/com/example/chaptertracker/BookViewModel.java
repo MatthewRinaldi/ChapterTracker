@@ -47,4 +47,19 @@ public class BookViewModel extends AndroidViewModel {
             bookDao.deleteBook(book);
         });
     }
+
+    public void updateBook(Book book) {
+        Executors.newSingleThreadExecutor().execute(() -> {
+            bookDao.updateBook(book);
+        });
+    }
+
+    public void getSyncBookById(int bookId, Consumer<Book> onCall) {
+        Executors.newSingleThreadExecutor().execute(() -> {
+            Book book = bookDao.getSyncBookById(bookId);
+            new Handler(Looper.getMainLooper()).post(() -> {
+                onCall.accept(book);
+            });
+        });
+    }
 }

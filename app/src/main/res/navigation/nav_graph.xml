@@ -25,6 +25,9 @@
         <action
             android:id="@+id/chapterFragmentAction"
             app:destination="@id/chapterFragment" />
+        <action
+            android:id="@+id/bookDeleteAction"
+            app:destination="@id/booksFragment" />
     </fragment>
     <fragment
         android:id="@+id/chapterFragment"

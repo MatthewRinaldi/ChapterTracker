@@ -2,11 +2,13 @@ package com.example.chaptertracker;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {Book.class, Chapter.class}, version = 4)
+@Database(entities = {Book.class, Chapter.class}, version = 8)
 public abstract class ChapterTrackerDatabase extends RoomDatabase {
 
     private static ChapterTrackerDatabase INSTANCE;
@@ -21,8 +23,17 @@ public abstract class ChapterTrackerDatabase extends RoomDatabase {
                     context.getApplicationContext(),
                     ChapterTrackerDatabase.class,
                     "chapter_tracker_db"
-            ).fallbackToDestructiveMigration().build();
+            ).fallbackToDestructiveMigration(true)
+                    .addCallback(new Callback() {
+                        @Override
+                        public void onOpen(@NonNull SupportSQLiteDatabase db) {
+                            super.onOpen(db);
+                            db.setForeignKeyConstraintsEnabled(true);
+                        }
+                    })
+                    .build();
         }
         return INSTANCE;
     }
+
 }

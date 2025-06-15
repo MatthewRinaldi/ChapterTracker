@@ -1,6 +1,8 @@
 package com.example.chaptertracker;
 
 import android.app.Application;
+import android.os.Handler;
+import android.os.Looper;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -9,6 +11,7 @@ import androidx.lifecycle.LiveData;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 
 public class ChapterViewModel extends AndroidViewModel {
 
@@ -35,6 +38,15 @@ public class ChapterViewModel extends AndroidViewModel {
     public void deleteChapter(Chapter chapter) {
         Executors.newSingleThreadExecutor().execute(() -> {
             chapterDao.deleteChapter(chapter);
+        });
+    }
+
+    public void getSyncChapterForBook(int bookId, Consumer<List<Chapter>> onCall) {
+        Executors.newSingleThreadExecutor().execute(() -> {
+            List<Chapter> chapters = chapterDao.getSyncChapterForBook(bookId);
+            new Handler(Looper.getMainLooper()).post(() -> {
+                onCall.accept(chapters);
+            });
         });
     }
 }
