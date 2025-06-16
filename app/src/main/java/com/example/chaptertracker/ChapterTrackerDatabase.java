@@ -6,15 +6,17 @@ import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {Book.class, Chapter.class}, version = 8)
+@Database(entities = {Book.class, Chapter.class, Note.class}, version = 10)
 public abstract class ChapterTrackerDatabase extends RoomDatabase {
 
     private static ChapterTrackerDatabase INSTANCE;
 
     public abstract BookDao bookDao();
     public abstract ChapterDao chapterDao();
+    public abstract NoteDao noteDao();
 
     // Custom DB initialization setup to prevent potential duplicate DBs
     public static synchronized  ChapterTrackerDatabase getInstance(Context context) {

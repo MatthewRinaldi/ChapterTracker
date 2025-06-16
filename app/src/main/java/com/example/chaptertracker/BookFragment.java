@@ -11,21 +11,18 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 
-import com.example.chaptertracker.databinding.BookListItemBinding;
 import com.example.chaptertracker.databinding.ChapterListItemBinding;
-import com.example.chaptertracker.databinding.CreateBookDialogBinding;
 import com.example.chaptertracker.databinding.FragmentBookBinding;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class BookFragment extends Fragment {
 
@@ -221,9 +218,32 @@ class ChapterRecyclerViewAdapter extends RecyclerView.Adapter<ChapterRecyclerVie
                 int position = getAdapterPosition();
                 chapter.setChapterName("Chapter " + (position + 1));
                 chapter.setChapterIndex(position + 1);
-                chapterViewModel.updateChapterName(chapter);
+                chapterViewModel.updateChapter(chapter);
             }
             mBinding.chapterTitleTextView.setText(chapter.getChapterName());
+            mBinding.chapterCompletionTextView.setText("");
+
+            if (chapter.getChapterRead()) {
+                mBinding.chapterListItemLayout.setBackgroundColor(0xFF90EE90);
+                mBinding.chapterCompletionTextView.setText(SimpleDateFormat.getDateTimeInstance().format(new Date(chapter.getTimestamp())));
+            }
+
+            mBinding.getRoot().setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    chapter.setChapterRead(true);
+                    chapter.setTimestamp(new Date().getTime());
+
+                    chapterViewModel.updateChapter(chapter);
+                    return true;
+                }
+
+                @Override
+                public boolean onLongClickUseDefaultHapticFeedback(@NonNull View v) {
+                    return true;
+                }
+            });
+
             mBinding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
